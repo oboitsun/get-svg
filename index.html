@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Audio Buffer Display</title>
+    <!-- <script src="js/audiodisplay.js"></script> -->
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script src="jscolor.js"></script>
+    <style>
+      body {
+        font: 14pt Arial, sans-serif;
+        background-color: #f8ecdc;
+        width: 100vw;
+        overflow: hidden;
+      }
+
+      select {
+        font: 14pt Arial, sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <canvas id="view1" width="750" height="200"></canvas> -->
+    <div>Color1: <input id="1" value="#000" data-jscolor="{}" /></div>
+    <div>Color2: <input id="2" value="#000" data-jscolor="{}" /></div>
+    <div>Color3: <input id="3" value="#000" data-jscolor="{}" /></div>
+    <input type="file" id="fileinput" multiple />
+    <div id="waveform"></div>
+    <img src="" id="canvasImg" alt="" width="100%" />
+
+    <div id="svgs"></div>
+
+    <script src="./js/waveform.js"></script>
+  </body>
+</html>
