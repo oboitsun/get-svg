@@ -30,7 +30,7 @@ document.getElementById("fileinput").addEventListener(
           progressColor: "transparent",
           cursorWidth: 0,
         });
-
+        const name = this.files[i].name.replace(".mp3", "");
         if (this.files[i]) {
           var reader = new FileReader();
 
@@ -52,26 +52,32 @@ document.getElementById("fileinput").addEventListener(
         }
 
         setTimeout(function () {
-          const svg = document.createElement("svg", { id: `svg_${i}` });
-          svg.width = "100vw";
           var svgNS = "http://www.w3.org/2000/svg";
           var xlinkNS = "http://www.w3.org/1999/xlink";
+          let svg = document.createElement("svg");
+          svg.id = `svg_${i}`;
+          svg.setAttribute("width", "100vw");
+          svg.setAttribute("height", 128);
+          svg.setAttribute("xmlns", svgNS);
+          svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+
           var imgSrc = wavesurfer.exportImage("image/png");
           //   console.log(imgSrc);
           //   document.getElementById("canvasImg").src = imgSrc;
 
           var svgimg = document.createElementNS(svgNS, "image");
 
-          svgimg.setAttribute("id", "importedCanvas_");
+          svgimg.setAttribute("id", `importedCanvas_${i}`);
           svgimg.setAttributeNS(xlinkNS, "xlink:href", imgSrc);
 
           svgimg.setAttribute("x", 0);
           svgimg.setAttribute("y", 0);
-          svgimg.setAttribute("width", "100%");
+          svgimg.setAttribute("width", "100vw");
           svgimg.setAttribute("height", 128);
 
           svg.appendChild(svgimg);
           targetSVG.appendChild(svg);
+          download(svg.outerHTML, `${name}`, "image/svg+xml");
           //   const canvas = document.getElementsByTagName("wave");
 
           //   var myRectangle = canvas.getSerializedSvg(true);
@@ -89,4 +95,23 @@ function createContainers(i) {
   container.id = `waveform_${i}`;
 
   document.body.appendChild(container);
+}
+function download(data, filename, type) {
+  var file = new Blob([data], { type: type });
+  if (window.navigator.msSaveOrOpenBlob)
+    // IE10+
+    window.navigator.msSaveOrOpenBlob(file, filename);
+  else {
+    // Others
+    var a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
 }
